@@ -10,7 +10,8 @@
             <section class='chef_info center'>
                 <%#= gravatar_for recipe.chef %>
                 <p>Chef name: <%= recipe.chef.chefname %></p>
-            </section>    
+            </section>
+            <%= image_tag(recipe.picture.url, size: '150x120', class: 'gravatar') if recipe.picture? %>
         </div>
         
         <div class='col-md-10 well'>
