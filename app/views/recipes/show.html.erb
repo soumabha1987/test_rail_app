@@ -14,7 +14,7 @@
       </div>
       
       <%= gravatar_for @recipe.chef, size:50 %>
-      <h5>Brought you by: <%= @recipe.chef.chefname %></h5>
+      <h5>Brought you by: <%= link_to @recipe.chef.chefname, chef_path(@recipe.chef) %></h5>
       <div class="pull-right panel panel-default">
         <div class='panel-body'>
           <%= link_to like_recipe_path(@recipe, like: true), method: :post do %>
@@ -32,5 +32,7 @@
 <br>
   <div>
     <%= link_to "<< Return to recipe listing", recipes_path, class: "btn btn-warning btn-small" %>
-    <%= link_to "Edit this recipe", edit_recipe_path(@recipe), class: "btn btn-default btn-small" %>
+    <% if logged_in? && @recipe.chef == current_user %>
+      <%= link_to "Edit this recipe", edit_recipe_path(@recipe), class: "btn btn-default btn-small" %>
+    <% end %>
   </div>

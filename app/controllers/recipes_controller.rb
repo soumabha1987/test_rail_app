@@ -1,11 +1,14 @@
 class RecipesController < ApplicationController
+  before_action :set_recipe, only:[:show, :edit, :update]
+  before_action :require_same_user, only:[:edit, :update]
+  before_action :require_user, except:[:index, :show]
   
   def index
     @recipes = Recipe.paginate(page: params[:page], per_page: 4)
   end
   
   def show
-    @recipe = Recipe.find(params[:id])
+    
   end
   
   def new
@@ -14,7 +17,7 @@ class RecipesController < ApplicationController
   
   def create
     @recipe = Recipe.new(recipe_params)
-    @recipe.chef = Chef.find(1)
+    @recipe.chef = Chef.find(current_user)
     
     if @recipe.save
       flash[:success] = "Your recipe was created successfully"
@@ -26,11 +29,10 @@ class RecipesController < ApplicationController
   end
   
   def edit
-    @recipe = Recipe.find(params[:id])
+    
   end
   
   def update
-    @recipe = Recipe.find(params[:id])
     if @recipe.update(recipe_params)
       flash[:success] = "Your recipe was updated successfully"
       redirect_to recipe_path(@recipe)
@@ -41,7 +43,7 @@ class RecipesController < ApplicationController
   
   def like
     @recipe = Recipe.find(params[:id])
-    Like.create(likes: params[:like], chef: Chef.first, recipe: @recipe)
+    Like.create(likes: params[:like], chef: current_user, recipe: @recipe)
     flash[:success] = "Your selection is successfull"
     redirect_to :back
   end
@@ -51,5 +53,16 @@ class RecipesController < ApplicationController
     def recipe_params
       params.require(:recipe).permit(:name, :summary, :description, :picture)
     end
+    
+    def set_recipe
+      @recipe = Recipe.find(params[:id])
+    end
+    
+    def require_same_user
+      if current_user != @recipe.chef
+        redirect_to root_path
+      end
+    end
+    
 
 end

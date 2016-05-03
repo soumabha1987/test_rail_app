@@ -10,22 +10,30 @@
 
 <header class='navbar navbar-fixed-top navbar-default'>
   <div class='container'>
-    <%= link_to 'myRecipes', root_path, class:'btn btn-lg btn-success',  id:'logo'  %>
+    <% if logged_in? %>
+      <%= link_to 'myRecipes', chef_path(current_user), class:'btn btn-lg btn-success',  id:'logo'  %>
+    <% else %>
+      <%= link_to 'myRecipes', login_path, class:'btn btn-lg btn-success',  id:'logo'  %>
+    <% end %>
     
     <div class='nav_item pull-right'>
-      <%= link_to '+ New Recipe', new_recipe_path, class:'btn btn-default btn-warning' %>
+      <% if logged_in? %>
+        <%= link_to current_user.chefname, chef_path(current_user), class: 'btn btn-info' %>
+        <%= link_to '+ New Recipe', new_recipe_path, class:'btn btn-default btn-warning' %>
+        <%= link_to 'Logout', logout_path, class:'btn btn-default btn-info' %>
+      <% else %>
+        <%= link_to 'Login', login_path, class: 'btn btn-primary' %>
+        <%= link_to 'Register', register_path, class:'btn btn-default btn-info' %>
+      <% end %>
     </div>
   </div>
 </header>
 
 <div class='container'>
   <%= yield %>
-<div class='footer'>
+</div>
+<footer class='container footer'>
   &copy; My Recepies | 2015
-</div>
-
-</div>
-
-
+</footer>
 </body>
 </html>

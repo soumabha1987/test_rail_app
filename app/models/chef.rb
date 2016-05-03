@@ -8,5 +8,5 @@ class Chef < ActiveRecord::Base
                                     length: { maximum:105, minimum:5 },
                                     format: { with: VALID_EMAIL_REGEX }
                               
-        
+  has_secure_password     
 end

@@ -2,9 +2,16 @@
 <br>
 <br>
 <br>
-<h1>All recipes</h1>
+<h1>Chef Name: <%= @chef.chefname %></h1>
+<div class='row'>
+    <div class='col-md-4'>
+      <%= gravatar_for @chef, size:200 %>
+    </div>
+</div>
 
-<%= will_paginate %>
+<br>
+<%= will_paginate @recipes %>
+<div class='row'>
 <% @recipes.each do |recipe| %>
     <div class='row'>
         <div class='col-md-2'>
@@ -32,4 +39,5 @@
     </div>
     <hr/>
 <% end %>
-<%= will_paginate %>
+</div>
+<%= will_paginate @recipes%>
